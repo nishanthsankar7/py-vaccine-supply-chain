@@ -1,0 +1,101 @@
+{% extends "Home.html" %}
+
+{% block content %}
+    <h2>{{operation}}  Packing</h2>
+    <form id="frm" name="frm" method="post" action="/ProcessPackingOperation" enctype="multipart/form-data">
+               
+      
+         <input type="hidden" name="operation" value="{{operation}}"/>
+         <input type="hidden" name="unique_id" value="{{row.packing_id}}"/>
+
+          <div class="form-group row">
+            <label for="production_batch_no" class="col-sm-3 col-form-label">Production Batch No</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="production_batch_no" id="production_batch_no"  value="{{row.production_batch_no}}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="packing_batch_no" class="col-sm-3 col-form-label">Packing Batch No</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="packing_batch_no" id="packing_batch_no"  value="{{row.packing_batch_no}}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label for="packing_date_time" class="col-sm-3 col-form-label">Packing Date Time </label>
+            <div class="col-sm-3">
+              <input type="datetime-local" class="form-control" name="packing_date_time" id="packing_date_time" value="{{(row.packing_date_time | string) [0:16] | replace(' ', 'T') }}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="packing_form" class="col-sm-3 col-form-label">Packing Form</label>
+            <div class="col-sm-9">
+              <textarea rows="5" class="form-control" name="packing_form" id="packing_form" required {{'readonly' if operation == 'Delete'}} >{{row.packing_form}}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="packing_materials" class="col-sm-3 col-form-label">Packing Materials</label>
+            <div class="col-sm-9">
+              <textarea rows="5" class="form-control" name="packing_materials" id="packing_materials" required {{'readonly' if operation == 'Delete'}} >{{row.packing_materials}}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="packing_equipment" class="col-sm-3 col-form-label">Packing Equipment</label>
+            <div class="col-sm-9">
+              <textarea rows="5" class="form-control" name="packing_equipment" id="packing_equipment" required {{'readonly' if operation == 'Delete'}} >{{row.packing_equipment}}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="abnormal_record" class="col-sm-3 col-form-label">Abnormal Record</label>
+            <div class="col-sm-9">
+              <textarea rows="5" class="form-control" name="abnormal_record" id="abnormal_record"  required {{'readonly' if operation == 'Delete'}} >{{row.abnormal_record}}</textarea>
+            </div>
+	    </div>
+        <div class="form-group row">
+            <label for="inspectionReport" class="col-sm-3 col-form-label">Inspection Report</label>
+            <div class="col-sm-3">
+              <input type="file" class="form-control" name="inspectionReport" id="inspectionReport" {{'required' if operation == 'Create'}} {{'readonly' if operation == 'Delete'}} />
+            </div>
+            <label for="investigation_report" class="col-sm-3 col-form-label">Investigation Report</label>
+            <div class="col-sm-3">
+              <input type="file" class="form-control" name="investigation_report" id="investigation_report" {{'required' if operation == 'Create'}} {{'readonly' if operation == 'Delete'}} />
+            </div>
+        </div>
+        <div class="form-group row">
+
+            <label for="actual_weight" class="col-sm-3 col-form-label">Actual Weight</label>
+            <div class="col-sm-3">
+              <input type="number" class="form-control" name="actual_weight" id="actual_weight" value="{{row.actual_weight}}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="packing_in_charge" class="col-sm-3 col-form-label">Packing In Charge {{packing_in_charges | length }}</label>
+            <div class="col-sm-3">
+                <select class="form-control" name="packing_in_charge" id="packing_in_charge" {{'readonly' if operation == 'Delete'}}>
+                    {% for charge in packing_in_charges %}
+                        <option {{'selected' if charge.packing_in_charge_id == row.packing_in_charge}} value="{{charge.packing_in_charge_id}}">{{charge.packing_in_charge_name}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <label for="packing_reviewer" class="col-sm-3 col-form-label">Packing Reviewer</label>
+            <div class="col-sm-3">
+                <select class="form-control" name="packing_reviewer" id="packing_reviewer" {{'readonly' if operation == 'Delete'}}>
+                    {% for reviewer in packing_reviewers %}
+                        <option value="{{reviewer.packing_reviewer_id}}">{{reviewer.packing_reviewer_name}}</option>
+                    {% endfor %}
+                </select>
+
+
+            </div>
+        </div>
+        <div class="text-center">
+                <button type="submit" class="btn btn-outline-primary btn-sm ">{{operation}}</button>
+                <a href="/PackingListing" class="btn btn-outline-primary btn-sm ">Cancel</a>
+        </div>
+
+    </form>
+    
+{% endblock %}

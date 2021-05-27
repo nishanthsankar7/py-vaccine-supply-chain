@@ -1,0 +1,45 @@
+{% extends "Home.html" %}
+
+{% block content %}
+    <h2 class="heading">Production Reviewer Listing</h2>
+    
+<div class="text-center m-2"><a href="/ProductionReviewerOperation?operation=Create" class="btn btn-outline-primary btn-sm ">Create</a></div>
+    <table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      
+      <th scope="col">Production Reviewer Name</th>
+      <th scope="col">Is Active</th>
+      <th scope="col">Action</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+        {% if records | length == 0 %}
+            <tr>
+                <td colspan="3">
+                    <div class="alert alert-info" style="display:block" >
+                        <div class="text-center"> <b>No&nbsp;</b><span>Production Reviewer Found</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+    {% for row in records %}
+        <tr>
+            <td>{{ row.production_reviewer_name }}</td>
+            <td>{{ row.is_active}}</td>
+        <td>
+            <a href="/ProductionReviewerOperation?operation=Edit&unique_id={{row.production_reviewer_id}}" class="btn btn-outline-warning btn-sm ">Edit</a>
+            <a href="/ProductionReviewerOperation?operation=Delete&unique_id={{row.production_reviewer_id}}" class="btn btn-outline-warning btn-sm ">Delete</a>
+        </td>
+        </tr>
+    {% endfor %}
+   </tbody>
+</table>
+<div class="text-center m-2"><a href="/ProductionReviewerOperation?operation=Create" class="btn btn-outline-primary btn-sm ">Create</a></div>
+{% endblock %}
+
+
+
+

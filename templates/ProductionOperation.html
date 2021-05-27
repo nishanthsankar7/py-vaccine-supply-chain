@@ -1,0 +1,103 @@
+{% extends "Home.html" %}
+
+{% block content %}
+    <h2>{{operation}}  Production</h2>
+    <form id="frm" name="frm" method="post" action="/ProcessProductionOperation" enctype="multipart/form-data">
+               
+      
+         <input type="hidden" name="operation" value="{{operation}}"/>
+         <input type="hidden" name="unique_id" value="{{row.production_id}}"/>
+
+          <div class="form-group row">
+            <label for="company_name" class="col-sm-3 col-form-label">Company Name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="company_name" id="company_name"  value="{{row.company_name}}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="vaccine_name" class="col-sm-3 col-form-label">Vaccine Name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="vaccine_name" id="vaccine_name"  value="{{row.vaccine_name}}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="production_batch_no" class="col-sm-3 col-form-label">Production Batch No</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="production_batch_no" id="production_batch_no" value="{{row.production_batch_no}}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="production_date_time" class="col-sm-3 col-form-label">Production Date Time </label>
+            <div class="col-sm-3">
+              <input type="datetime-local" class="form-control" name="production_date_time" id="production_date_time" value="{{(row.production_date_time | string) [0:16] | replace(' ', 'T') }}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+            <label for="expiry_date_time" class="col-sm-3 col-form-label">Expiry Date Time</label>
+            <div class="col-sm-3">
+              <input type="datetime-local" class="form-control" name="expiry_date_time" id="expiry_date_time" value="{{(row.expiry_date_time | string) [0:16] | replace(' ', 'T') }}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="raw_materials" class="col-sm-3 col-form-label">Raw Materials</label>
+            <div class="col-sm-9">
+              <textarea rows="5" class="form-control" name="raw_materials" id="raw_materials" required {{'readonly' if operation == 'Delete'}} >{{row.raw_materials}}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="auxiliary_materials" class="col-sm-3 col-form-label">Auxiliary Materials</label>
+            <div class="col-sm-9">
+              <textarea rows="5" class="form-control" name="auxiliary_materials" id="auxiliary_materials" required {{'readonly' if operation == 'Delete'}} >{{row.auxiliary_materials}}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="production_equipment_parameters" class="col-sm-3 col-form-label">Production Equipment Parameters</label>
+            <div class="col-sm-9">
+              <textarea rows="5" class="form-control" name="production_equipment_parameters" id="production_equipment_parameters"  required {{'readonly' if operation == 'Delete'}} >{{row.production_equipment_parameters}}</textarea>
+            </div>
+	    </div>
+        <div class="form-group row">
+            <label for="abnormal_record" class="col-sm-3 col-form-label">Abnormal Record</label>
+            <div class="col-sm-9">
+              <textarea rows="5" class="form-control" name="abnormal_record" id="abnormal_record"  required {{'readonly' if operation == 'Delete'}} >{{row.abnormal_record}}</textarea>
+            </div>
+	    </div>
+        <div class="form-group row">
+            <label for="investigation_report" class="col-sm-3 col-form-label">Investigation Report</label>
+            <div class="col-sm-3">
+              <input type="file" class="form-control" name="investigation_report" id="investigation_report" value="{{row.investigation_report}}" {{'required' if operation == 'Create'}} {{'readonly' if operation == 'Delete'}} />
+            </div>
+            <label for="actual_weight" class="col-sm-3 col-form-label">Actual Weight</label>
+            <div class="col-sm-3">
+              <input type="number" class="form-control" name="actual_weight" id="actual_weight" value="{{row.actual_weight}}" required {{'readonly' if operation == 'Delete'}} />
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="production_in_charge" class="col-sm-3 col-form-label">Production In Charge {{production_in_charges | length }}</label>
+            <div class="col-sm-3">
+                <select class="form-control" name="production_in_charge" id="production_in_charge" {{'readonly' if operation == 'Delete'}}>
+                    {% for charge in production_in_charges %}
+                        <option {{'selected' if charge.production_in_charge_id == row.production_in_charge}} value="{{charge.production_in_charge_id}}">{{charge.production_in_charge_name}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <label for="production_reviewer" class="col-sm-3 col-form-label">Production Reviewer</label>
+            <div class="col-sm-3">
+                <select class="form-control" name="production_reviewer" id="production_reviewer" {{'readonly' if operation == 'Delete'}}>
+                    {% for reviewer in production_reviewers %}
+                        <option value="{{reviewer.production_reviewer_id}}">{{reviewer.production_reviewer_name}}</option>
+                    {% endfor %}
+                </select>
+
+
+            </div>
+        </div>
+        <div class="text-center">
+                <button type="submit" class="btn btn-outline-primary btn-sm ">{{operation}}</button>
+                <a href="/ProductionListing" class="btn btn-outline-primary btn-sm ">Cancel</a>
+        </div>
+
+    </form>
+    
+{% endblock %}
